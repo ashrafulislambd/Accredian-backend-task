@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  courses Course[]
+}
+
+model Course {
+  id Int @id @default(autoincrement())
+  title String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  referrerBonus Int
+  refereeBonus Int
+  referals Referal[]
+}
+
+model Referal {
+  id Int @id @default(autoincrement())
+  referrerName String
+  refereeName String
+  refereeEmail String
+  message String?
+  course Course @relation(fields: [courseId], references: [id])
+  courseId Int
+}
